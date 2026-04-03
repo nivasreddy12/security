@@ -38,11 +38,13 @@ supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
 
 
 
-# Helper
+# # Helper
+# def hash_password(password: str):
+#     return pwd_context.hash(password)
 def hash_password(password: str):
+    if len(password.encode("utf-8")) > 72:
+        raise HTTPException(status_code=400, detail="Password too long (max 72 chars)")
     return pwd_context.hash(password)
-
-
 def log_exception(endpoint: str, error: Exception):
     logger.error(f"[{endpoint}] {str(error)}", exc_info=True)
 
